@@ -55,5 +55,6 @@ void draw() {
   obj2.show();
   plyr.move(moveVect);
   plyr.show();
-  if (col.hasCollisions()) println("Collision detected!");
+  if (plyr.getCollider().collidingWith(obj1.getCollider())) println("Player colliding with obj1!");
+  if (plyr.getCollider().collidingWith(obj2.getCollider())) println("Player colliding with obj2!");
 }

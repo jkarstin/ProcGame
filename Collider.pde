@@ -1,21 +1,15 @@
 public class Collider {
-  float[] mCoord;
-  float[] mSize;
+  private Coord mCoord;
+  private Coord mSize;
 
   public Collider(float x, float y, float w, float h) {
-    mCoord = new float[2];
-    mSize = new float[2];
-    mCoord[0] = x;
-    mCoord[1] = y;
-    mSize[0] = w;
-    mSize[1] = h;
+    mCoord = new Coord(x, y);
+    mSize = new Coord(w, h);
   }
   
   public void move(float deltaX, float deltaY) {
-    mCoord[0] += deltaX;
-    mCoord[1] += deltaY;
-    mCoord[0] = wrap(mCoord[0], 0, width);
-    mCoord[1] = wrap(mCoord[1], 0, height);
+    mCoord.plusEq(new Coord(deltaX, deltaY));
+    mCoord.wrap(new Coord(), new Coord(width, height));
   }
   
   public boolean contains(float[] coord) {
@@ -23,58 +17,53 @@ public class Collider {
   }
   
   public boolean contains(float x, float y) {
-    if (x >= mCoord[0] &&
-        x <= mCoord[0]+mSize[0] &&
-        y >= mCoord[1] &&
-        y <= mCoord[1]+mSize[1]) {
+    if (x >= mCoord.x() &&
+        x <= mCoord.x()+mSize.x() &&
+        y >= mCoord.y() &&
+        y <= mCoord.y()+mSize.y()) {
       return true;
     }
     return false;
   }
   
-  public void topLeft(float[] container) {
-    if (container != null) {
-      container[0] = mCoord[0];
-      container[1] = mCoord[1];
+  public float top() {
+    return mCoord.y();
+  }
+  
+  public float left() {
+    return mCoord.x();
+  }
+  
+  public float bottom() {
+    return mCoord.y() + mSize.y();
+  }
+  
+  public float right() {
+    return mCoord.x() + mSize.x();
+  }
+  
+  public Coord topLeft() {
+    return mCoord;
+  }
+  
+  public Coord bottomRight() {
+    return mCoord.plus(mSize);
+  }
+  
+  public boolean collidingWith(Collider other) {
+    //Compare vertical edges
+    if ((this.left()   >= other.left() && this.left()   <= other.right()) || //this  left  edge between other left and right edge
+        (this.right()  >= other.left() && this.right()  <= other.right()) || //this  right edge between other left and right edge
+        (other.left()  >= this.left()  && other.left()  <= this.right() ) || //other left  edge between this  left and right edge
+        (other.right() >= this.left()  && other.right() <= this.right() )) { //other right edge between this  left and right edge
+      //Compare horizontal edges
+      if ((this.top()     >= other.top() && this.top()     <= other.bottom()) || //this  top    edge between other top and bottom edge
+          (this.bottom()  >= other.top() && this.bottom()  <= other.bottom()) || //this  bottom edge between other top and bottom edge
+          (other.top()    >= this.top()  && other.top()    <= this.bottom() ) || //other top    edge between this  top and bottom edge
+          (other.bottom() >= this.top()  && other.bottom() <= this.bottom() )) { //other bottom edge between this  top and bottom edge
+        return true;
+      }
     }
-  }
-  
-  public void topRight(float[] container) {
-    if (container != null) {
-      container[0] = mCoord[0]+mSize[0];
-      container[1] = mCoord[1];
-    }
-  }
-  
-  public void bottomLeft(float[] container) {
-    if (container != null) {
-      container[0] = mCoord[0];
-      container[1] = mCoord[1]+mSize[1];
-    }
-  }
-  
-  public void bottomRight(float[] container) {
-    if (container != null) {
-      container[0] = mCoord[0]+mSize[0];
-      container[1] = mCoord[1]+mSize[1];
-    }
-  }
-  
-  //Gives value capped between two endpoints.
-  //  If value is less than minimum, cap at minimum.
-  //  If value is greater than maximum, cap at maximum.
-  private float cap(float val, float min, float max) {
-    if (val < min) return min;
-    if (val > max) return max;
-    return val;
-  }
-  
-  //Gives value wrapped between two endpoints.
-  //  If value is less than minimum, wrap around to maximum.
-  //  If value is greater than maximum, wrap around to minimum.
-  private float wrap(float val, float min, float max) {
-    if (val < min) return max-(min-val);
-    if (val > max) return min+(val-max);
-    return val;
+    return false;
   }
 };
