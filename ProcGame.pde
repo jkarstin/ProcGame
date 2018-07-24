@@ -25,7 +25,6 @@ void keyPressed() {
   } else if (key == 'd' || key == 'D') {
     moveVect.setX(1);
   }
-  
   if (key == 'w' || key == 'W') {
     moveVect.setY(-1);
   } else if (key == 's' || key == 'S') {
@@ -34,15 +33,12 @@ void keyPressed() {
 }
 
 void keyReleased() {
-  if ((key == 'a' || key == 'A') && moveVect.x() < 0) {
-    moveVect.setX(0);
-  } else if ((key == 'd' || key == 'D') && moveVect.x() > 0) {
+  if (((key == 'a' || key == 'A') && moveVect.x() < 0) ||
+      ((key == 'd' || key == 'D') && moveVect.x() > 0)) {
     moveVect.setX(0);
   }
-  
-  if ((key == 'w' || key == 'W') && moveVect.y() < 0) {
-    moveVect.setY(0);
-  } else if ((key == 's' || key == 'S') && moveVect.y() > 0) {
+  if (((key == 'w' || key == 'W') && moveVect.y() < 0) ||
+      ((key == 's' || key == 'S') && moveVect.y() > 0)) {
     moveVect.setY(0);
   }
 }

@@ -2,11 +2,6 @@ public class Object {
   protected Coord mCoord;
   protected Coord mSize;
   protected Collider mCol;
-
-  //public Object(float[] coord, float[] size) {
-  //  mSize = size;
-  //  mCoord = coord;
-  //}
   
   //Constructor
   public Object(float x, float y, float w, float h) {
