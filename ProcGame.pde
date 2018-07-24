@@ -1,8 +1,9 @@
 Object obj1;
 Object obj2;
 Player plyr;
-Collisions col;
 Coord moveVect;
+
+final float moveSpeed = 5;
 
 void setup() {
   size(800, 600);
@@ -10,11 +11,6 @@ void setup() {
   obj1 = new Object(20, 20, 40, 40);
   obj2 = new Object(80, 20, 40, 40);
   plyr = new Player(20, 120, 20, 40);
-  
-  col = new Collisions();
-  col.addCollider(obj1.getCollider());
-  col.addCollider(obj2.getCollider());
-  col.addCollider(plyr.getCollider());
   
   moveVect = new Coord();
 }
@@ -47,7 +43,8 @@ void draw() {
   background(0);
   obj1.show();
   obj2.show();
-  plyr.move(moveVect);
+  //plyr.move(5, 2);
+  plyr.move(moveVect.times(moveSpeed));
   plyr.show();
   if (plyr.collidingWith(obj1)) println("Player colliding with obj1!");
   if (plyr.collidingWith(obj2)) println("Player colliding with obj2!");

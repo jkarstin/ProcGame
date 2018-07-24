@@ -13,7 +13,7 @@ public class Object {
   //Move the coordinates of object by given delta vector
   public void move(Coord delta) {
     mCoord.plusEq(delta);
-    mCoord.wrap(new Coord(), new Coord(width, height));
+    mCoord.wrap(mSize.negate(), new Coord(width, height));
     mCol.move(delta);
   }
   

@@ -9,25 +9,25 @@ public class Collider {
   
   public void move(Coord delta) {
     mCoord.plusEq(delta);
-    mCoord.wrap(new Coord(), new Coord(width, height));
+    mCoord.wrap(mSize.negate(), new Coord(width, height));
   }
   
   public void move(float deltaX, float deltaY) {
     this.move(new Coord(deltaX, deltaY));
   }
   
-  public boolean contains(float[] coord) {
-    return contains(coord[0], coord[1]);
-  }
-  
-  public boolean contains(float x, float y) {
-    if (x >= mCoord.x() &&
-        x <= mCoord.x()+mSize.x() &&
-        y >= mCoord.y() &&
-        y <= mCoord.y()+mSize.y()) {
+  public boolean contains(Coord coord) {
+    if (coord.x() >= mCoord.x()           &&
+        coord.x() <= mCoord.x()+mSize.x() &&
+        coord.y() >= mCoord.y()           &&
+        coord.y() <= mCoord.y()+mSize.y()) {
       return true;
     }
     return false;
+  }
+  
+  public boolean contains(float x, float y) {
+    return contains(new Coord(x, y));
   }
   
   public float top() {

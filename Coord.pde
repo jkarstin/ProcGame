@@ -27,6 +27,10 @@ public class Coord {
     return mY;
   }
   
+  public Coord negate() {
+    return this.times(-1);
+  }
+  
   public Coord plus(Coord other) {
     if (other != null) {
       return new Coord(this.x() + other.x(), this.y() + other.y());
@@ -39,6 +43,10 @@ public class Coord {
       this.mX += other.x();
       this.mY += other.y();
     }
+  }
+  
+  public Coord times(float mult) {
+    return new Coord(this.mX*mult, this.mY*mult);
   }
   
   public void cap(Coord TL, Coord BR) {
