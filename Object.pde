@@ -26,6 +26,10 @@ public class Object {
     return mCol;
   }
   
+  public boolean collidingWith(Object other) {
+    return this.mCol.collidingWith(other.getCollider());
+  }
+  
   //Display object on screen
   public void show() {
     rect(mCoord.x(), mCoord.y(), mSize.x(), mSize.y());
