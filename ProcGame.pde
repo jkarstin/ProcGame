@@ -2,7 +2,7 @@ Object obj1;
 Object obj2;
 Player plyr;
 Collisions col;
-float[] moveVect;
+Coord moveVect;
 
 void setup() {
   size(800, 600);
@@ -16,36 +16,34 @@ void setup() {
   col.addCollider(obj2.getCollider());
   col.addCollider(plyr.getCollider());
   
-  moveVect = new float[2];
-  moveVect[0] = 0;
-  moveVect[1] = 0;
+  moveVect = new Coord();
 }
 
 void keyPressed() {
   if (key == 'a' || key == 'A') {
-    moveVect[0] = -1;
+    moveVect.setX(-1);
   } else if (key == 'd' || key == 'D') {
-    moveVect[0] = 1;
+    moveVect.setX(1);
   }
   
   if (key == 'w' || key == 'W') {
-    moveVect[1] = -1;
+    moveVect.setY(-1);
   } else if (key == 's' || key == 'S') {
-    moveVect[1] = 1;
+    moveVect.setY(1);
   }
 }
 
 void keyReleased() {
-  if ((key == 'a' || key == 'A') && moveVect[0] < 0) {
-    moveVect[0] = 0;
-  } else if ((key == 'd' || key == 'D') && moveVect[0] > 0) {
-    moveVect[0] = 0;
+  if ((key == 'a' || key == 'A') && moveVect.x() < 0) {
+    moveVect.setX(0);
+  } else if ((key == 'd' || key == 'D') && moveVect.x() > 0) {
+    moveVect.setX(0);
   }
   
-  if ((key == 'w' || key == 'W') && moveVect[1] < 0) {
-    moveVect[1] = 0;
-  } else if ((key == 's' || key == 'S') && moveVect[1] > 0) {
-    moveVect[1] = 0;
+  if ((key == 'w' || key == 'W') && moveVect.y() < 0) {
+    moveVect.setY(0);
+  } else if ((key == 's' || key == 'S') && moveVect.y() > 0) {
+    moveVect.setY(0);
   }
 }
 

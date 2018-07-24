@@ -16,15 +16,15 @@ public class Object {
   }
   
   //Move the coordinates of object by given delta vector
-  public void move(float[] deltaVect) {
-    this.move(deltaVect[0], deltaVect[1]);
+  public void move(Coord delta) {
+    mCoord.plusEq(delta);
+    mCoord.wrap(new Coord(), new Coord(width, height));
+    mCol.move(delta);
   }
   
   //Move the coordinates of object by given delta amounts
   public void move(float deltaX, float deltaY) {
-    mCoord.plusEq(new Coord(deltaX, deltaY));
-    mCoord.wrap(new Coord(), new Coord(width, height));
-    mCol.move(deltaX, deltaY);
+    this.move(new Coord(deltaX, deltaY));
   }
   
   public Collider getCollider() {

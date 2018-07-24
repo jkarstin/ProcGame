@@ -7,9 +7,13 @@ public class Collider {
     mSize = new Coord(w, h);
   }
   
-  public void move(float deltaX, float deltaY) {
-    mCoord.plusEq(new Coord(deltaX, deltaY));
+  public void move(Coord delta) {
+    mCoord.plusEq(delta);
     mCoord.wrap(new Coord(), new Coord(width, height));
+  }
+  
+  public void move(float deltaX, float deltaY) {
+    this.move(new Coord(deltaX, deltaY));
   }
   
   public boolean contains(float[] coord) {

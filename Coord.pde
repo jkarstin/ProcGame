@@ -11,6 +11,14 @@ public class Coord {
     mY = y;
   }
   
+  public void setX(float x) {
+    mX = x;
+  }
+  
+  public void setY(float y) {
+    mY = y;
+  }
+  
   public float x() {
     return mX;
   }
