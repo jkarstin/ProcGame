@@ -1,3 +1,8 @@
+/* Coord.pde
+ * 
+ * J Karstin Neill    07.27.18
+ */
+
 public class Coord {
   float mX, mY;
   
@@ -32,9 +37,7 @@ public class Coord {
   }
   
   public Coord plus(Coord other) {
-    if (other != null) {
-      return new Coord(this.x() + other.x(), this.y() + other.y());
-    }
+    if (other != null) return new Coord(this.x() + other.x(), this.y() + other.y());
     return null;
   }
   
