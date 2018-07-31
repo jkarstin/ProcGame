@@ -1,5 +1,8 @@
 /* Coord.pde
  * 
+ * The skeletal system of the entire game world. A(n) (ideally) comprehensive base
+ * structure to allow all world components to communicate and manipulate location and dimension.
+ * 
  * J Karstin Neill    07.27.18
  */
 

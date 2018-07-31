@@ -1,5 +1,9 @@
 /* Conversation.pde
  * 
+ * Fairly simplified prototype for a modular NPC social interaction system.
+ * Built as a management database for smaller interaction units called Topics.
+ * Currently does not utilize the responses component of Topics.
+ * 
  * J Karstin Neill    07.27.18
  */
 

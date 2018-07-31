@@ -1,5 +1,9 @@
 /* Collider.pde
  * 
+ * Pseudo object-style class designed to specifically handle overlapping detection using basic geometric principles.
+ * Currently only supports non-rotated rectangular geometry, but plans for triangular, elliptical, and polygon
+ * collision implementation will be initiated and carried through if need arises.
+ * 
  * J Karstin Neill    07.27.18
  */
 
