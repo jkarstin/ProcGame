@@ -17,15 +17,8 @@ final int   MAXOBJECTS = 1024;
 final int   MAXNPCS    = 32;
 final int   MAXITEMS   = 64;
 
-//System variables and data structures
-Object[] allVisibleObjects;
-int visObjCount;
-Object[] allPhysicalObjects;
-int objectCount;
-NPC[] allNPCs;
-int npcCount;
-Item[] allItems;
-int itemCount;
+Scene mainScene;
+Scene currentScene;
 
 Being plyr;
 Object obj1;
@@ -48,19 +41,8 @@ void setup() {
   //Set up screen
   size(800, 600);
 
-  //Initialize housekeeping arrays
-  allVisibleObjects = new Object[MAXOBJECTS];
-  visObjCount       = 0;
-  allPhysicalObjects  = new Object[MAXOBJECTS];
-  objectCount         = 0;
-  allNPCs  = new NPC[MAXNPCS];
-  npcCount = 0;
-  allItems  = new Item[MAXITEMS];
-  itemCount = 0;
-  for (int i=0; i < MAXOBJECTS; i++) allVisibleObjects[i]  = null;
-  for (int i=0; i < MAXOBJECTS; i++) allPhysicalObjects[i] = null;
-  for (int i=0; i < MAXNPCS;    i++) allNPCs[i]            = null;
-  for (int i=0; i < MAXITEMS;   i++) allItems[i]           = null;
+  //Initialize scenes
+  mainScene = new Scene("Main", 0);
 
   //Initialize objects
   plyr = new     Being("Player",  20, 120, 20, 20);
@@ -75,25 +57,28 @@ void setup() {
   npc1.addTopic("Hello! How are you?");
   npc1.addTopic("I'm doing pretty well.");
 
-  //Populate housekeeping arrays
-  allVisibleObjects[visObjCount++] = obj1;
-  allVisibleObjects[visObjCount++] = obj2;
-  allVisibleObjects[visObjCount++] = itm1;
-  allVisibleObjects[visObjCount++] = itm2;
-  allVisibleObjects[visObjCount++] = npc1;
-  allVisibleObjects[visObjCount++] = plyr;
-  allVisibleObjects[visObjCount++] = inv;
-  allPhysicalObjects[objectCount++] = obj1;
-  allPhysicalObjects[objectCount++] = obj2;
-  allPhysicalObjects[objectCount++] = npc1;
-  allNPCs[npcCount++] = npc1;
-  allItems[itemCount++] = itm1;
-  allItems[itemCount++] = itm2;
+  //Populate scenes
+  mainScene.addVisibleObject(obj1);
+  mainScene.addVisibleObject(obj2);
+  mainScene.addVisibleObject(itm1);
+  mainScene.addVisibleObject(itm2);
+  mainScene.addVisibleObject(npc1);
+  mainScene.addVisibleObject(plyr);
+  mainScene.addVisibleObject(inv);
+  mainScene.addPhysicalObject(obj1);
+  mainScene.addPhysicalObject(obj2);
+  mainScene.addPhysicalObject(npc1);
+  mainScene.addNPC(npc1);
+  mainScene.addItem(itm1);
+  mainScene.addItem(itm2);
   
   //Initialize system variables
   blocked  = false;
   interact = false;
   moveVect = new Coord();
+  
+  //Set current scene to starting value
+  currentScene = mainScene;
 } //end setup()
 
 
@@ -124,12 +109,10 @@ void keyReleased() {
 
 //Runs once per frame of the game
 void draw() {
-  //Draw background over last frame's draw() call
-  background(0);
   
   //Most basic form of collision blocking. Preemptively stops center of player from entering Collider
-  for (int o=0; o < objectCount; o++) {
-    if (allPhysicalObjects[o].getCollider().contains(plyr.getCollider().center().plus(moveVect.times(MOVESPEED)))) {
+  for (int o=0; currentScene.getPhysicalObject(o) != null; o++) {
+    if (currentScene.getPhysicalObject(o).getCollider().contains(plyr.getCollider().center().plus(moveVect.times(MOVESPEED)))) {
       blocked = true; //Object is blocking movement
       break; //Stop searching for blocking objects
     }
@@ -137,27 +120,29 @@ void draw() {
   if (blocked) blocked = false; //Reset blocked flag
   else plyr.move(moveVect.times(MOVESPEED)); //If blocked flag was not set, move
   
-  //Display visible objects
-  for (int o=0; o < visObjCount; o++) allVisibleObjects[o].show();
+
   
   //Process interaction if present
   if (interact) {
     //Reset flag
     interact = false;
     //Check for NPC collision in cardinal direction at distance of 40 from plyr center.
-    for (int n=0; n < npcCount; n++) {
-      if (allNPCs[n].getCollider().contains(plyr.getCollider().center().plus(new Coord(  0, -40))) ||
-          allNPCs[n].getCollider().contains(plyr.getCollider().center().plus(new Coord( 40,   0))) ||
-          allNPCs[n].getCollider().contains(plyr.getCollider().center().plus(new Coord(  0,  40))) ||
-          allNPCs[n].getCollider().contains(plyr.getCollider().center().plus(new Coord(-40,   0)))) {
-        println(allNPCs[n].interact()); //If collision, interact
+    for (int n=0; currentScene.getNPC(n) != null; n++) {
+      if (currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord(  0, -40))) ||
+          currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord( 40,   0))) ||
+          currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord(  0,  40))) ||
+          currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord(-40,   0)))) {
+        println(currentScene.getNPC(n).interact()); //If collision, interact
         break; //Stop searching for NPCs
       }
     }
   }
   
   //Pick up any touching items
-  for (int i=0; i < itemCount; i++) {
+  for (int i=0; currentScene.getItem(i) != null; i++) {
     //Do something
   }
+  
+  //Display scene
+  currentScene.show();
 } //end draw()
