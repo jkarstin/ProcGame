@@ -35,6 +35,8 @@ boolean interact;
 long lastMillis;
 float deltaTime;
 
+Timer t;
+
 
 //-------- SETUP --------//
 
@@ -80,6 +82,10 @@ void setup() {
   moveVect = new Coord();
   lastMillis = millis();
   deltaTime  = 0;
+  
+  //Timer setup
+  t = new Timer(1.5);
+  t.resume();
   
   //Set current scene to starting value
   currentScene = mainScene;
@@ -127,8 +133,6 @@ void draw() {
   if (blocked) blocked = false; //Reset blocked flag
   else plyr.move(moveVect.times(MOVESPEED*deltaTime)); //If blocked flag was not set, move
   
-
-  
   //Process interaction if present
   if (interact) {
     //Reset flag
@@ -139,7 +143,7 @@ void draw() {
           currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord( 40,   0))) ||
           currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord(  0,  40))) ||
           currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord(-40,   0)))) {
-        println(currentScene.getNPC(n).interact()); //If collision, interact
+        currentScene.getNPC(n).interact();
         break; //Stop searching for NPCs
       }
     }
@@ -148,6 +152,12 @@ void draw() {
   //Pick up any touching items
   for (int i=0; currentScene.getItem(i) != null; i++) {
     //Do something
+  }
+  
+  //Timer testing
+  if (t.timedOut()) {
+    println("Timer timed out!");
+    t.reset();
   }
   
   //Display scene

@@ -19,6 +19,10 @@ public class Object {
     mCol = new Collider(x, y, w, h);
   }
   
+  public Coord location() {
+    return mCoord;
+  }
+  
   //Return name of object
   public String name() {
     return mName;
