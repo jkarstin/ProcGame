@@ -13,31 +13,19 @@ public class Scene {
   private String mName;
   private int mID;
   
-  private Object[] mAllVisibleObjects;
-  private int      mVisObjCount;
-  private Object[] mAllPhysicalObjects;
-  private int      mObjectCount;
-  private NPC[]    mAllNPCs;
-  private int      mNpcCount;
-  private Item[]   mAllItems;
-  private int      mItemCount;
+  private Collection<Object> mAllVisibleObjects;
+  private Collection<Object> mAllPhysicalObjects;
+  private Collection<NPC>    mAllNPCs;
+  private Collection<Item>   mAllItems;
   
   public Scene(String name, int ID) {
     mName = name;
     mID = ID;
     
-    mAllVisibleObjects   = new Object[MAXOBJECTS];
-    mVisObjCount         = 0;
-    mAllPhysicalObjects  = new Object[MAXOBJECTS];
-    mObjectCount         = 0;
-    mAllNPCs             = new NPC[MAXNPCS];
-    mNpcCount            = 0;
-    mAllItems            = new Item[MAXITEMS];
-    mItemCount           = 0;
-    for (int i=0; i < MAXOBJECTS; i++) mAllVisibleObjects[i]  = null;
-    for (int i=0; i < MAXOBJECTS; i++) mAllPhysicalObjects[i] = null;
-    for (int i=0; i < MAXNPCS;    i++) mAllNPCs[i]            = null;
-    for (int i=0; i < MAXITEMS;   i++) mAllItems[i]           = null;
+    mAllVisibleObjects  = new Collection<Object>(MAXOBJECTS);
+    mAllPhysicalObjects = new Collection<Object>(MAXOBJECTS);
+    mAllNPCs            = new Collection<NPC>(MAXNPCS);
+    mAllItems           = new Collection<Item>(MAXITEMS);
   }
   
   public String name() {
@@ -57,42 +45,39 @@ public class Scene {
   }
   
   public Object getVisibleObject(int index) {
-    if (index < mVisObjCount) return mAllVisibleObjects[index];
-    return null;
+    return mAllVisibleObjects.getElement(index);
   }
   
   public Object getPhysicalObject(int index) {
-    if (index < mObjectCount) return mAllPhysicalObjects[index];
-    return null;
+    return mAllPhysicalObjects.getElement(index);
   }
   
   public NPC getNPC(int index) {
-    if (index < mNpcCount) return mAllNPCs[index];
-    return null;
+    return (NPC)mAllNPCs.getElement(index);
   }
   
   public Item getItem(int index) {
-    if (index < mItemCount) return mAllItems[index];
-    return null;
+    return (Item)mAllItems.getElement(index);
   }
   
   public void addVisibleObject(Object object) {
-    if (mVisObjCount < MAXOBJECTS) mAllVisibleObjects[mVisObjCount++] = object;
+    mAllVisibleObjects.addElement(object);
   }
   
   public void addPhysicalObject(Object object) {
-    if (mObjectCount < MAXOBJECTS) mAllPhysicalObjects[mObjectCount++] = object;  }
+    mAllPhysicalObjects.addElement(object);
+  }
   
   public void addNPC(NPC npc) {
-    if (mNpcCount < MAXNPCS) mAllNPCs[mNpcCount++] = npc;
+    mAllNPCs.addElement(npc);
   }
   
   public void addItem(Item item) {
-    if (mItemCount < MAXITEMS) mAllItems[mItemCount++] = item;
+    mAllItems.addElement(item);
   }
   
   public void show() {
     background(0);
-    for (int o=0; o < mVisObjCount; o++) mAllVisibleObjects[o].show();
+    for (int o=0; mAllVisibleObjects.getElement(o) != null; o++) mAllVisibleObjects.getElement(o).show();
   }
 };

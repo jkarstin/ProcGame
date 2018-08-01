@@ -8,12 +8,12 @@ public class Topic {
   
   private String mPrompt;
   //private String[] mResponses;
-  private int mResponseCount;
+  //private int mResponseCount;
   
   public Topic(String prompt) {
     mPrompt = prompt;
     //mResponses = new String[RESPONSEMAX];
-    mResponseCount = 0;
+    //mResponseCount = 0;
   }
   
   //public void addResponse(String response) {
