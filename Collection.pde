@@ -35,15 +35,15 @@ public class Collection<T extends Object> {
     return mSpace;
   }
   
-  public void addElement(Object element) {
+  public void addElement(T element) {
     if (mMax > 0 && mSpace <= mMax) {
       if (mCount >= mSpace) grow();
       if (mCount < mSpace) mElements[mCount++] = element;
     }
   }
   
-  public Object getElement(int index) {
-    if (index < mCount) return mElements[index];
+  public T getElement(int index) {
+    if (index < mCount) return (T)mElements[index];
     return null;
   }
   

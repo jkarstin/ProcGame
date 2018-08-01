@@ -53,11 +53,11 @@ public class Scene {
   }
   
   public NPC getNPC(int index) {
-    return (NPC)mAllNPCs.getElement(index);
+    return mAllNPCs.getElement(index);
   }
   
   public Item getItem(int index) {
-    return (Item)mAllItems.getElement(index);
+    return mAllItems.getElement(index);
   }
   
   public void addVisibleObject(Object object) {
