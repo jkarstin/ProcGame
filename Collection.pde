@@ -1,6 +1,11 @@
 /* Collection.pde
  * 
+ * Uses Object as "maximum parent" value for generic type.
+ * The mElement array is thus populated by Object objects,
+ * and adding/getting uses typecasting to type T to give an outward generic type usage.
  * 
+ * TODO: Test to make sure mMax value edge-case behaviour is working as expected.
+ * No testing has yet been done, so this is not guaranteed.
  * 
  * J Karstin Neill    08.01.18
  */
