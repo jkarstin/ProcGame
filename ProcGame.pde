@@ -12,7 +12,7 @@
 //-------- VARIABLES --------//
 
 //Global constants
-final float MOVESPEED  = 5;
+final float MOVESPEED  = 200;
 final int   MAXOBJECTS = 1024;
 final int   MAXNPCS    = 32;
 final int   MAXITEMS   = 64;
@@ -32,6 +32,8 @@ Item itm2;
 Coord moveVect;
 boolean blocked;
 boolean interact;
+long lastMillis;
+float deltaTime;
 
 
 //-------- SETUP --------//
@@ -76,6 +78,8 @@ void setup() {
   blocked  = false;
   interact = false;
   moveVect = new Coord();
+  lastMillis = millis();
+  deltaTime  = 0;
   
   //Set current scene to starting value
   currentScene = mainScene;
@@ -109,16 +113,19 @@ void keyReleased() {
 
 //Runs once per frame of the game
 void draw() {
+  //Calculate amount of time since last draw() call, and store in deltaTime as seconds
+  deltaTime  = (millis()-lastMillis)/1000.0;
+  lastMillis = millis();
   
   //Most basic form of collision blocking. Preemptively stops center of player from entering Collider
   for (int o=0; currentScene.getPhysicalObject(o) != null; o++) {
-    if (currentScene.getPhysicalObject(o).getCollider().contains(plyr.getCollider().center().plus(moveVect.times(MOVESPEED)))) {
+    if (currentScene.getPhysicalObject(o).getCollider().contains(plyr.getCollider().center().plus(moveVect.times(MOVESPEED*deltaTime)))) {
       blocked = true; //Object is blocking movement
       break; //Stop searching for blocking objects
     }
   }
   if (blocked) blocked = false; //Reset blocked flag
-  else plyr.move(moveVect.times(MOVESPEED)); //If blocked flag was not set, move
+  else plyr.move(moveVect.times(MOVESPEED*deltaTime)); //If blocked flag was not set, move
   
 
   
