@@ -5,31 +5,31 @@
 
 public class NPC extends Being {
   private Conversation mConvo;
-  private Timer mTopicShowTimer;
-  private String mTopicText;
+  private Timer mBlurbShowTimer;
+  private String mCurrentBlurb;
   
   public NPC(String name, float x, float y, float w, float h) {
     super(name, x, y, w, h);
     mConvo = new Conversation();
-    mTopicShowTimer = new Timer(3);
-    mTopicText = "";
+    mBlurbShowTimer = new Timer(3);
+    mCurrentBlurb = "";
   }
   
   public void interact() {
-    mTopicShowTimer.begin();
-    mTopicText = mConvo.getNextTopic().getPrompt();
+    mBlurbShowTimer.begin();
+    mCurrentBlurb = mConvo.getNextBlurb();
   }
   
-  public void addTopic(String topic) {
-    mConvo.addTopic(topic);
+  public void addBlurb(String blurb) {
+    mConvo.addBlurb(blurb);
   }
   
   //Override's super class show() with added speech bubble timing
   public void show() {
     super.show();
-    if (mTopicShowTimer.isRunning() && !mTopicShowTimer.timedOut()) {
+    if (mBlurbShowTimer.isRunning() && !mBlurbShowTimer.timedOut()) {
       fill(255);
-      text(mTopicText, mCoord.x(), mCoord.y());
-    } else if (mTopicShowTimer.timedOut()) mTopicShowTimer.halt();
+      text(mCurrentBlurb, mCoord.x(), mCoord.y());
+    } else if (mBlurbShowTimer.timedOut()) mBlurbShowTimer.halt();
   }
 };

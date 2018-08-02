@@ -1,32 +1,31 @@
 /* Conversation.pde
  * 
  * Fairly simplified prototype for a modular NPC social interaction system.
- * Built as a management database for smaller interaction units called Topics.
- * Currently does not utilize the responses component of Topics.
+ * Built as a cyclical wrapping queue for strings called blurbs.
  * 
- * J Karstin Neill    07.27.18
+ * J Karstin Neill    08.01.18
  */
 
 public class Conversation {
-  private final static int TOPICMAX = 16;
+  private final static int BLURBMAX = 16;
   
-  private Topic[] mTopics;
-  private int mTopicCount;
-  private int mCurrentTopic;
+  private String[] mBlurbs;
+  private int mBlurbCount;
+  private int mCurrentBlurb;
   
   public Conversation() {
-    mTopics = new Topic[TOPICMAX];
-    for (int i=0; i < TOPICMAX; i++) mTopics[i] = null;
-    mTopicCount = 0;
-    mCurrentTopic = 0;
+    mBlurbs = new String[BLURBMAX];
+    for (int i=0; i < BLURBMAX; i++) mBlurbs[i] = null;
+    mBlurbCount = 0;
+    mCurrentBlurb = 0;
   }
   
-  public Topic getNextTopic() {
-    if (mCurrentTopic >= mTopicCount) mCurrentTopic = 0;
-    return mTopics[mCurrentTopic++];
+  public String getNextBlurb() {
+    if (mCurrentBlurb >= mBlurbCount) mCurrentBlurb = 0;
+    return mBlurbs[mCurrentBlurb++];
   }
   
-  public void addTopic(String prompt) {
-    if (mTopicCount < TOPICMAX) mTopics[mTopicCount++] = new Topic(prompt);
+  public void addBlurb(String blurb) {
+    if (mBlurbCount < BLURBMAX) mBlurbs[mBlurbCount++] = blurb;
   }
 };

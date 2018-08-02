@@ -35,8 +35,6 @@ boolean interact;
 long lastMillis;
 float deltaTime;
 
-Timer t;
-
 
 //-------- SETUP --------//
 
@@ -58,8 +56,8 @@ void setup() {
   itm2 = new      Item("square", 400, 120, 10, 10);
 
   //Give NPCs conversation topics
-  npc1.addTopic("Hello! How are you?");
-  npc1.addTopic("I'm doing pretty well.");
+  npc1.addBlurb("Hello! How are you?");
+  npc1.addBlurb("I'm doing pretty well.");
 
   //Populate scenes
   mainScene.addVisibleObject(obj1);
@@ -82,10 +80,6 @@ void setup() {
   moveVect = new Coord();
   lastMillis = millis();
   deltaTime  = 0;
-  
-  //Timer setup
-  t = new Timer(1.5);
-  t.resume();
   
   //Set current scene to starting value
   currentScene = mainScene;
@@ -149,17 +143,20 @@ void draw() {
     }
   }
   
-  //Pick up any touching items
-  for (int i=0; currentScene.getItem(i) != null; i++) {
-    //Do something
-  }
-  
-  //Timer testing
-  if (t.timedOut()) {
-    println("Timer timed out!");
-    t.reset();
-  }
-  
   //Display scene
   currentScene.show();
+  
+  //Pick up any touching items
+  for (int i=0; currentScene.getItem(i) != null; i++) {
+    //Check for collision
+    if (plyr.collidingWith(currentScene.getItem(i))) {
+      //Search for item within currentScenes visible objects
+      for (int o=0; currentScene.getVisibleObject(o) != null; o++)
+        //Remove it from visible objects collection
+        if (currentScene.getVisibleObject(o) == currentScene.getItem(i))
+          currentScene.removeVisibleObject(o);
+      //Remove the item from the scene
+      currentScene.removeItem(i);
+    }
+  }
 } //end draw()

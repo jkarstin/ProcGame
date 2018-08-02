@@ -60,6 +60,22 @@ public class Scene {
     return mAllItems.getElement(index);
   }
   
+  public Object removeVisibleObject(int index) {
+    return mAllVisibleObjects.removeElement(index);
+  }
+  
+  public Object removePhysicalObject(int index) {
+    return mAllPhysicalObjects.removeElement(index);
+  }
+  
+  public NPC removeNPC(int index) {
+    return mAllNPCs.removeElement(index);
+  }
+  
+  public Item removeItem(int index) {
+    return mAllItems.removeElement(index);
+  }
+  
   public void addVisibleObject(Object object) {
     mAllVisibleObjects.addElement(object);
   }

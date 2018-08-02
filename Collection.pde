@@ -10,7 +10,7 @@
  * J Karstin Neill    08.01.18
  */
 
-public class Collection<T extends Object> {
+public class Collection<E extends Object> {
   private Object[] mElements;
   private int mSpace;
   private int mCount;
@@ -40,16 +40,32 @@ public class Collection<T extends Object> {
     return mSpace;
   }
   
-  public void addElement(T element) {
+  public void addElement(E element) {
     if (mMax > 0 && mSpace <= mMax) {
       if (mCount >= mSpace) grow();
       if (mCount < mSpace) mElements[mCount++] = element;
     }
   }
   
-  public T getElement(int index) {
-    if (index < mCount) return (T)mElements[index];
+  public E getElement(int index) {
+    if (index < mCount) return (E)mElements[index];
     return null;
+  }
+  
+  public E removeElement(int index) {
+    E element = this.getElement(index);
+    if (element != null) {
+      Object[] tmp = new Object[mSpace];
+      for (int i=0; i < mCount; i++) {
+        if (i < index) tmp[i] = mElements[i];
+        else if (i > index) tmp[i-1] = mElements[i];
+        else continue;
+      }
+      mElements = tmp;
+      tmp = null;
+      mCount--;
+    }
+    return element;
   }
   
   private void grow() {
