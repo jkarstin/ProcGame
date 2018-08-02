@@ -77,6 +77,8 @@ void setup() {
   npc2.addBlurb("I've heard about you.");
   npc2.addBlurb("Bob was right, you are quite annoying.");
   npc2.addBlurb("*whistles as if you are not here*");
+  npc2.addBlurb("Why don't you do yourself a favor...");
+  npc2.addBlurb("...and go back through that door over there.");
 
   //Populate scenes
   mainScene.addVisibleObject(obj1);
@@ -98,6 +100,7 @@ void setup() {
   nextScene.addVisibleObject(dor2);
   nextScene.addVisibleObject(npc2);
   nextScene.addVisibleObject(plyr);
+  nextScene.addPhysicalObject(npc2);
   nextScene.addNPC(npc2);
   nextScene.addDoor(dor2);
   
