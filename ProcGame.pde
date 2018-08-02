@@ -13,9 +13,6 @@
 
 //Global constants
 final float MOVESPEED  = 200;
-final int   MAXOBJECTS = 1024;
-final int   MAXNPCS    = 32;
-final int   MAXITEMS   = 64;
 
 Scene mainScene;
 Scene nextScene;
@@ -25,6 +22,7 @@ Being plyr;
 Object obj1;
 Object obj2;
 NPC npc1;
+NPC npc2;
 
 Inventory inv;
 Item itm1;
@@ -56,6 +54,7 @@ void setup() {
   obj1 = new    Object(  "obj1",  20,  20, 40, 40);
   obj2 = new    Object(  "obj2",  80,  20, 40, 40);
   npc1 = new       NPC(   "Bob",  20, 200, 40, 40);
+  npc2 = new       NPC(  "Mike",  20, 200, 40, 40);
   inv  = new Inventory();
   itm1 = new      Item(  "itm1", 120, 120, 10, 10);
   itm2 = new      Item(  "itm2", 400, 120, 10, 10);
@@ -73,14 +72,19 @@ void setup() {
   npc1.addBlurb("It's dangerous to go alone.");
   npc1.addBlurb("...I have nothing to give you.");
   npc1.addBlurb("That's it, I'm pretending I don't know you.");
+  
+  npc2.addBlurb("I'm not who you think I am.");
+  npc2.addBlurb("I've heard about you.");
+  npc2.addBlurb("Bob was right, you are quite annoying.");
+  npc2.addBlurb("*whistles as if you are not here*");
 
   //Populate scenes
   mainScene.addVisibleObject(obj1);
   mainScene.addVisibleObject(obj2);
   mainScene.addVisibleObject(itm1);
   mainScene.addVisibleObject(itm2);
-  mainScene.addVisibleObject(npc1);
   mainScene.addVisibleObject(dor1);
+  mainScene.addVisibleObject(npc1);
   mainScene.addVisibleObject(plyr);
   mainScene.addVisibleObject(inv);
   mainScene.addPhysicalObject(obj1);
@@ -92,7 +96,9 @@ void setup() {
   mainScene.addDoor(dor1);
   
   nextScene.addVisibleObject(dor2);
+  nextScene.addVisibleObject(npc2);
   nextScene.addVisibleObject(plyr);
+  nextScene.addNPC(npc2);
   nextScene.addDoor(dor2);
   
   //Initialize system variables
