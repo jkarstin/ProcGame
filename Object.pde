@@ -52,6 +52,7 @@ public class Object {
   
   //Display object on screen
   public void show() {
+    fill(255);
     rect(mCoord.x(), mCoord.y(), mSize.x(), mSize.y());
   }
 };

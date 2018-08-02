@@ -29,7 +29,9 @@ public class NPC extends Being {
     super.show();
     if (mBlurbShowTimer.isRunning() && !mBlurbShowTimer.timedOut()) {
       fill(255);
-      text(mCurrentBlurb, mCoord.x(), mCoord.y());
+      rect(mCoord.x(), mCoord.y()-30, 250, 30);
+      fill(0);
+      text(mCurrentBlurb, mCoord.x()+10, mCoord.y()-10);
     } else if (mBlurbShowTimer.timedOut()) mBlurbShowTimer.halt();
   }
 };

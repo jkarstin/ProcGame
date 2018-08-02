@@ -6,9 +6,10 @@
  */
 
 public class Scene {
-  final static int   MAXOBJECTS = 1024;
-  final static int   MAXNPCS    = 32;
-  final static int   MAXITEMS   = 64;
+  final static int MAXOBJECTS = 1024;
+  final static int MAXNPCS    = 32;
+  final static int MAXITEMS   = 64;
+  final static int MAXDOORS   = 64;
   
   private String mName;
   private int mID;
@@ -17,6 +18,7 @@ public class Scene {
   private Collection<Object> mAllPhysicalObjects;
   private Collection<NPC>    mAllNPCs;
   private Collection<Item>   mAllItems;
+  private Collection<Door>   mAllDoors;
   
   public Scene(String name, int ID) {
     mName = name;
@@ -26,6 +28,7 @@ public class Scene {
     mAllPhysicalObjects = new Collection<Object>(MAXOBJECTS);
     mAllNPCs            = new Collection<NPC>(MAXNPCS);
     mAllItems           = new Collection<Item>(MAXITEMS);
+    mAllDoors           = new Collection<Door>(MAXDOORS);
   }
   
   public String name() {
@@ -60,6 +63,10 @@ public class Scene {
     return mAllItems.getElement(index);
   }
   
+  public Door getDoor(int index) {
+    return mAllDoors.getElement(index);
+  }
+  
   public Object removeVisibleObject(int index) {
     return mAllVisibleObjects.removeElement(index);
   }
@@ -76,6 +83,10 @@ public class Scene {
     return mAllItems.removeElement(index);
   }
   
+  public Door removeDoor(int index) {
+    return mAllDoors.removeElement(index);
+  }
+  
   public void addVisibleObject(Object object) {
     mAllVisibleObjects.addElement(object);
   }
@@ -90,6 +101,10 @@ public class Scene {
   
   public void addItem(Item item) {
     mAllItems.addElement(item);
+  }
+  
+  public void addDoor(Door door) {
+    mAllDoors.addElement(door);
   }
   
   public void show() {

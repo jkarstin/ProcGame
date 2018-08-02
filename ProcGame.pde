@@ -18,6 +18,7 @@ final int   MAXNPCS    = 32;
 final int   MAXITEMS   = 64;
 
 Scene mainScene;
+Scene nextScene;
 Scene currentScene;
 
 Being plyr;
@@ -28,6 +29,9 @@ NPC npc1;
 Inventory inv;
 Item itm1;
 Item itm2;
+
+Door dor1;
+Door dor2;
 
 Coord moveVect;
 boolean blocked;
@@ -45,6 +49,7 @@ void setup() {
 
   //Initialize scenes
   mainScene = new Scene("Main", 0);
+  nextScene = new Scene("next", 1);
 
   //Initialize objects
   plyr = new     Being("Player",  20, 120, 20, 20);
@@ -52,12 +57,22 @@ void setup() {
   obj2 = new    Object(  "obj2",  80,  20, 40, 40);
   npc1 = new       NPC(   "Bob",  20, 200, 40, 40);
   inv  = new Inventory();
-  itm1 = new      Item("square", 120, 120, 10, 10);
-  itm2 = new      Item("square", 400, 120, 10, 10);
+  itm1 = new      Item(  "itm1", 120, 120, 10, 10);
+  itm2 = new      Item(  "itm2", 400, 120, 10, 10);
+  dor1 = new      Door( "door1", 600, 300, 30, 40, nextScene);
+  dor2 = new      Door( "door2", 400, 200, 30, 40, mainScene);
 
   //Give NPCs conversation topics
   npc1.addBlurb("Hello! How are you?");
   npc1.addBlurb("I'm doing pretty well.");
+  npc1.addBlurb("Hello! How are you?");
+  npc1.addBlurb("I'm doing pretty well.");
+  npc1.addBlurb("What?");
+  npc1.addBlurb("Don't you have something better to do?");
+  npc1.addBlurb("This is not very productive...");
+  npc1.addBlurb("It's dangerous to go alone.");
+  npc1.addBlurb("...I have nothing to give you.");
+  npc1.addBlurb("That's it, I'm pretending I don't know you.");
 
   //Populate scenes
   mainScene.addVisibleObject(obj1);
@@ -65,6 +80,7 @@ void setup() {
   mainScene.addVisibleObject(itm1);
   mainScene.addVisibleObject(itm2);
   mainScene.addVisibleObject(npc1);
+  mainScene.addVisibleObject(dor1);
   mainScene.addVisibleObject(plyr);
   mainScene.addVisibleObject(inv);
   mainScene.addPhysicalObject(obj1);
@@ -73,6 +89,11 @@ void setup() {
   mainScene.addNPC(npc1);
   mainScene.addItem(itm1);
   mainScene.addItem(itm2);
+  mainScene.addDoor(dor1);
+  
+  nextScene.addVisibleObject(dor2);
+  nextScene.addVisibleObject(plyr);
+  nextScene.addDoor(dor2);
   
   //Initialize system variables
   blocked  = false;
@@ -157,6 +178,14 @@ void draw() {
           currentScene.removeVisibleObject(o);
       //Remove the item from the scene
       currentScene.removeItem(i);
+    }
+  }
+  
+  //Use doors
+  for (int d=0; currentScene.getDoor(d) != null; d++) {
+    //Check for collision
+    if (plyr.collidingWith(currentScene.getDoor(d))) {
+      if (currentScene.getDoor(d).takeDoor() != null) currentScene = currentScene.getDoor(d).takeDoor();
     }
   }
 } //end draw()
