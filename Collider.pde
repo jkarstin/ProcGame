@@ -29,6 +29,15 @@ public class Collider {
     this.move(new Coord(deltaX, deltaY));
   }
   
+  public void setLocation(Coord location) {
+    Coord delta = location.minus(mCoord);
+    this.move(delta);
+  }
+  
+  public void setLocation(float x, float y) {
+    this.setLocation(new Coord(x, y));
+  }
+  
   //Returns true if given coordinate value lies within or touches this collider
   public boolean contains(Coord coord) {
     if (coord.x() >= mCoord.x()           &&

@@ -40,6 +40,15 @@ public class Object {
     this.move(new Coord(deltaX, deltaY));
   }
   
+  public void setLocation(Coord location) {
+    Coord delta = location.minus(mCoord);
+    this.move(delta);
+  }
+  
+  public void setLocation(float x, float y) {
+    this.setLocation(new Coord(x, y));
+  }
+  
   //Returns reference to private mCol collider field
   public Collider getCollider() {
     return mCol;

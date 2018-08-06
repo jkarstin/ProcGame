@@ -58,8 +58,8 @@ void setup() {
   inv  = new Inventory();
   itm1 = new      Item(  "itm1", 120, 120, 10, 10);
   itm2 = new      Item(  "itm2", 400, 120, 10, 10);
-  dor1 = new      Door( "door1", 600, 300, 30, 40, nextScene);
-  dor2 = new      Door( "door2", 400, 200, 30, 40, mainScene);
+  dor1 = new      Door( "door1", 600, 300, 30, 40, nextScene, new Coord(350, 210));
+  dor2 = new      Door( "door2", 400, 200, 30, 40, mainScene, new Coord(550, 310));
 
   //Give NPCs conversation topics
   npc1.addBlurb("Hello! How are you?");
@@ -194,7 +194,10 @@ void draw() {
   for (int d=0; currentScene.getDoor(d) != null; d++) {
     //Check for collision
     if (plyr.collidingWith(currentScene.getDoor(d))) {
-      if (currentScene.getDoor(d).takeDoor() != null) currentScene = currentScene.getDoor(d).takeDoor();
+      if (currentScene.getDoor(d).takeDoor() != null) {
+        plyr.setLocation(currentScene.getDoor(d).getSpawnLocation());
+        currentScene = currentScene.getDoor(d).takeDoor();
+      }
     }
   }
 } //end draw()

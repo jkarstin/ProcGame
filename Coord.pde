@@ -51,6 +51,10 @@ public class Coord {
     }
   }
   
+  public Coord minus(Coord other) {
+    return this.plus(other.negate());
+  }
+  
   public Coord times(float mult) {
     return new Coord(this.mX*mult, this.mY*mult);
   }
