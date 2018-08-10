@@ -14,7 +14,7 @@ public class Inventory extends Object {
   private int mSlotCount;
   
   public Inventory(int slots) {
-    super("Inventory", width-210, height-210, 200, 200);
+    super("Inventory", 10, height-100, width-20, 90);
     mItems = new Item[slots];
     for (int i=0; i < slots; i++) mItems[i] = null;
     mItemCount = 0;

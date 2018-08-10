@@ -17,14 +17,15 @@ Scene nextScene;
 Scene currentScene;
 
 Being plyr;
-Object obj1;
-Object obj2;
+Object wal1;
+Object wal2;
+Object wal3;
+Object wal4;
 NPC npc1;
 NPC npc2;
 
 Inventory inv;
 Item key1;
-Item itm2;
 
 Door dor1;
 Door dor2;
@@ -49,28 +50,25 @@ void setup() {
   nextScene = new Scene("next", 1);
 
   //Initialize objects
-  plyr = new     Being("Player",  20, 120, 20, 20);
-  obj1 = new    Object(  "obj1",  20,  20, 40, 40);
-  obj2 = new    Object(  "obj2",  80,  20, 40, 40);
-  npc1 = new       NPC(   "Bob",  20, 200, 40, 40);
-  npc2 = new       NPC(  "Mike",  20, 200, 40, 40);
+  plyr = new     Being("Player",  (width-20)/2,  (height-20)/2,       20,         20);
+  wal1 = new    Object( "Wall1",            20,             20, width-80,         40);
+  wal2 = new    Object( "Wall2",            20,             60,       40, height-180);
+  wal3 = new    Object( "Wall3",            60,     height-160, width-80,         40);
+  wal4 = new    Object( "Wall4",      width-60,             20,       40, height-180);
+  npc1 = new       NPC(   "Bob",            80,            200,       40,         40);
+  npc2 = new       NPC(  "Mike",           400,            100,       40,         40);
   inv  = new Inventory(16);
-  key1 = new      Item(  "key1", 120, 120, 10, 10);
-  itm2 = new      Item(  "itm2", 400, 120, 10, 10);
-  dor1 = new      Door( "door1", 600, 300, 30, 40, nextScene, new Coord(350, 210), true, key1);
-  dor2 = new      Door( "door2", 400, 200, 30, 40, mainScene, new Coord(550, 310));
+  key1 = new      Item(  "key1",           120,            120,       10,         10);
+  dor1 = new      Door( "door1",      width-75, (height-140)/2,       30,         40, nextScene, new Coord(       80, (height-120)/2), true, key1);
+  dor2 = new      Door( "door2",            45, (height-140)/2,       30,         40, mainScene, new Coord(width-100, (height-120)/2));
 
   //Give NPCs conversation topics
   npc1.addBlurb("Hello! How are you?");
   npc1.addBlurb("I'm doing pretty well.");
-  npc1.addBlurb("Hello! How are you?");
-  npc1.addBlurb("I'm doing pretty well.");
-  npc1.addBlurb("What?");
-  npc1.addBlurb("Don't you have something better to do?");
-  npc1.addBlurb("This is not very productive...");
-  npc1.addBlurb("It's dangerous to go alone.");
-  npc1.addBlurb("...I have nothing to give you.");
-  npc1.addBlurb("That's it, I'm pretending I don't know you.");
+  npc1.addBlurb("My name is Bob!");
+  npc1.addBlurb("What's that?");
+  npc1.addBlurb("You want to get through that door over there?");
+  npc1.addBlurb("It's locked, silly! You'll need that key!");
   
   npc2.addBlurb("I'm not who you think I am.");
   npc2.addBlurb("I've heard about you.");
@@ -80,25 +78,36 @@ void setup() {
   npc2.addBlurb("...and go back through that door over there.");
 
   //Populate scenes
-  mainScene.addVisibleObject(obj1);
-  mainScene.addVisibleObject(obj2);
+  mainScene.addVisibleObject(wal1);
+  mainScene.addVisibleObject(wal2);
+  mainScene.addVisibleObject(wal3);
+  mainScene.addVisibleObject(wal4);
   mainScene.addVisibleObject(key1);
-  mainScene.addVisibleObject(itm2);
   mainScene.addVisibleObject(dor1);
   mainScene.addVisibleObject(npc1);
   mainScene.addVisibleObject(plyr);
   mainScene.addVisibleObject(inv);
-  mainScene.addPhysicalObject(obj1);
-  mainScene.addPhysicalObject(obj2);
+  mainScene.addPhysicalObject(wal1);
+  mainScene.addPhysicalObject(wal2);
+  mainScene.addPhysicalObject(wal3);
+  mainScene.addPhysicalObject(wal4);
   mainScene.addPhysicalObject(npc1);
   mainScene.addNPC(npc1);
   mainScene.addItem(key1);
-  mainScene.addItem(itm2);
   mainScene.addDoor(dor1);
-  
+
+  nextScene.addVisibleObject(wal1);
+  nextScene.addVisibleObject(wal2);
+  nextScene.addVisibleObject(wal3);
+  nextScene.addVisibleObject(wal4);
   nextScene.addVisibleObject(dor2);
   nextScene.addVisibleObject(npc2);
   nextScene.addVisibleObject(plyr);
+  nextScene.addVisibleObject(inv);
+  nextScene.addPhysicalObject(wal1);
+  nextScene.addPhysicalObject(wal2);
+  nextScene.addPhysicalObject(wal3);
+  nextScene.addPhysicalObject(wal4);
   nextScene.addPhysicalObject(npc2);
   nextScene.addNPC(npc2);
   nextScene.addDoor(dor2);
