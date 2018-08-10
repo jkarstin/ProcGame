@@ -44,15 +44,15 @@ public class Coord {
     return null;
   }
   
+  public Coord minus(Coord other) {
+    return this.plus(other.negate());
+  }
+  
   public void plusEq(Coord other) {
     if (other != null) {
       this.mX += other.x();
       this.mY += other.y();
     }
-  }
-  
-  public Coord minus(Coord other) {
-    return this.plus(other.negate());
   }
   
   public Coord times(float mult) {

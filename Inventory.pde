@@ -6,20 +6,23 @@
  */
 
 public class Inventory extends Object {
-  private final static int MAXITEMS = 32;
+  private final static int SLOTSIZE = 40;
+  private final static int WIDTH = 6;
   
   private Item[] mItems;
   private int mItemCount;
+  private int mSlotCount;
   
-  public Inventory() {
+  public Inventory(int slots) {
     super("Inventory", width-210, height-210, 200, 200);
-    mItems = new Item[MAXITEMS];
-    for (int i=0; i < MAXITEMS; i++) mItems[i] = null;
+    mItems = new Item[slots];
+    for (int i=0; i < slots; i++) mItems[i] = null;
     mItemCount = 0;
+    mSlotCount = slots;
   }
   
   public void addItem(Item item) {
-    if (mItemCount < MAXITEMS) {
+    if (mItemCount < mSlotCount) {
       mItems[mItemCount++] = item;
     }
   }
@@ -29,5 +32,13 @@ public class Inventory extends Object {
       return mItems[index];
     }
     return null;
+  }
+  
+  public void show() {
+    super.show();
+    for (int i=0; i < mItemCount; i++) {
+      mItems[i].setLocation(this.location().x()+(i%WIDTH)*SLOTSIZE+(SLOTSIZE/2), this.location().y()+(i/WIDTH)*SLOTSIZE+(SLOTSIZE/2));
+      mItems[i].show();
+    }
   }
 };

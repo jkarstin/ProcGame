@@ -30,7 +30,7 @@ public class Collider {
   }
   
   public void setLocation(Coord location) {
-    Coord delta = location.minus(mCoord);
+    Coord delta = location.minus(this.mCoord);
     this.move(delta);
   }
   

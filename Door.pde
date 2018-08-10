@@ -11,20 +11,24 @@ public class Door extends Object {
   private Item mKey;
   private Coord mSpawnLocation;
   
-  public Door(String name, float x, float y, float w, float h, Scene destination, Coord spawnLocation) {
+  public Door(String name, float x, float y, float w, float h, Scene destination, Coord spawn) {
     super(name, x, y, w, h);
     mDestScene = destination;
     mLocked = false;
     mKey = null;
-    mSpawnLocation = spawnLocation;
+    mSpawnLocation = spawn;
   }
   
-  public Door(String name, float x, float y, float w, float h, Scene destination, Coord spawnLocation, boolean locked, Item keyItem) {
+  public Door(String name, float x, float y, float w, float h, Scene destination, Coord spawn, boolean locked, Item keyItem) {
     super(name, x, y, w, h);
     mDestScene = destination;
     mLocked = locked;
     mKey = keyItem;
-    mSpawnLocation = spawnLocation;
+    mSpawnLocation = spawn;
+  }
+  
+  public Coord getSpawn() {
+    return mSpawnLocation;
   }
   
   public boolean isLocked() {
@@ -38,10 +42,6 @@ public class Door extends Object {
       } else return false;
     }
     return true;
-  }
-  
-  public Coord getSpawnLocation() {
-    return mSpawnLocation;
   }
   
   public Scene takeDoor() {

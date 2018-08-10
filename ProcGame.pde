@@ -3,8 +3,6 @@
  * This is the main() equivalent of the program. The core unit, that controls the rest of the game.
  * Must remain the same name as the directory it is stored in, for Processing to understand this.
  * 
- * TODO: Develop basic inventory system
- * 
  * J Karstin Neill    07.27.18
  */
 
@@ -12,7 +10,7 @@
 //-------- VARIABLES --------//
 
 //Global constants
-final float MOVESPEED  = 200;
+final float MOVESPEED  = 200; //rate of pixels/second player moves
 
 Scene mainScene;
 Scene nextScene;
@@ -25,7 +23,7 @@ NPC npc1;
 NPC npc2;
 
 Inventory inv;
-Item itm1;
+Item key1;
 Item itm2;
 
 Door dor1;
@@ -36,6 +34,7 @@ boolean blocked;
 boolean interact;
 long lastMillis;
 float deltaTime;
+boolean tookDoor;
 
 
 //-------- SETUP --------//
@@ -55,10 +54,10 @@ void setup() {
   obj2 = new    Object(  "obj2",  80,  20, 40, 40);
   npc1 = new       NPC(   "Bob",  20, 200, 40, 40);
   npc2 = new       NPC(  "Mike",  20, 200, 40, 40);
-  inv  = new Inventory();
-  itm1 = new      Item(  "itm1", 120, 120, 10, 10);
+  inv  = new Inventory(16);
+  key1 = new      Item(  "key1", 120, 120, 10, 10);
   itm2 = new      Item(  "itm2", 400, 120, 10, 10);
-  dor1 = new      Door( "door1", 600, 300, 30, 40, nextScene, new Coord(350, 210));
+  dor1 = new      Door( "door1", 600, 300, 30, 40, nextScene, new Coord(350, 210), true, key1);
   dor2 = new      Door( "door2", 400, 200, 30, 40, mainScene, new Coord(550, 310));
 
   //Give NPCs conversation topics
@@ -83,7 +82,7 @@ void setup() {
   //Populate scenes
   mainScene.addVisibleObject(obj1);
   mainScene.addVisibleObject(obj2);
-  mainScene.addVisibleObject(itm1);
+  mainScene.addVisibleObject(key1);
   mainScene.addVisibleObject(itm2);
   mainScene.addVisibleObject(dor1);
   mainScene.addVisibleObject(npc1);
@@ -93,7 +92,7 @@ void setup() {
   mainScene.addPhysicalObject(obj2);
   mainScene.addPhysicalObject(npc1);
   mainScene.addNPC(npc1);
-  mainScene.addItem(itm1);
+  mainScene.addItem(key1);
   mainScene.addItem(itm2);
   mainScene.addDoor(dor1);
   
@@ -150,14 +149,18 @@ void draw() {
   //Most basic form of collision blocking. Preemptively stops center of player from entering Collider
   for (int o=0; currentScene.getPhysicalObject(o) != null; o++) {
     if (currentScene.getPhysicalObject(o).getCollider().contains(plyr.getCollider().center().plus(moveVect.times(MOVESPEED*deltaTime)))) {
-      blocked = true; //Object is blocking movement
-      break; //Stop searching for blocking objects
+      //Object is blocking movement, set blocked flag
+      blocked = true;
+      //Stop searching for blocking objects
+      break;
     }
   }
-  if (blocked) blocked = false; //Reset blocked flag
-  else plyr.move(moveVect.times(MOVESPEED*deltaTime)); //If blocked flag was not set, move
+  //If blocked flag is set, clear it for next frame
+  if (blocked) blocked = false;
+  //If blocked flag was not set, move player
+  else plyr.move(moveVect.times(MOVESPEED*deltaTime));
   
-  //Process interaction if present
+  //Process player interaction if present
   if (interact) {
     //Reset flag
     interact = false;
@@ -168,7 +171,8 @@ void draw() {
           currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord(  0,  40))) ||
           currentScene.getNPC(n).getCollider().contains(plyr.getCollider().center().plus(new Coord(-40,   0)))) {
         currentScene.getNPC(n).interact();
-        break; //Stop searching for NPCs
+        //Stop searching for NPCs
+        break;
       }
     }
   }
@@ -185,19 +189,34 @@ void draw() {
         //Remove it from visible objects collection
         if (currentScene.getVisibleObject(o) == currentScene.getItem(i))
           currentScene.removeVisibleObject(o);
-      //Remove the item from the scene
-      currentScene.removeItem(i);
+      //Remove the item from the scene and add it to inventory
+      inv.addItem(currentScene.removeItem(i));
     }
   }
   
   //Use doors
+  tookDoor = false; //Flag to reduce door algorithm iteration count
   for (int d=0; currentScene.getDoor(d) != null; d++) {
     //Check for collision
     if (plyr.collidingWith(currentScene.getDoor(d))) {
-      if (currentScene.getDoor(d).takeDoor() != null) {
-        plyr.setLocation(currentScene.getDoor(d).getSpawnLocation());
-        currentScene = currentScene.getDoor(d).takeDoor();
+      //Try each inventory item as a key on door
+      for (int k=0; inv.getItem(k) != null; k++) {
+        //Note: Door.unlock(Item) always returns true if the door is not locked in the first place
+        if (currentScene.getDoor(d).unlock(inv.getItem(k))) {
+          //If door has been unlocked, ensure it leads somewhere
+          if (currentScene.getDoor(d).takeDoor() != null) {
+            //Change player location to spawn point determined by door
+            plyr.setLocation(currentScene.getDoor(d).getSpawn());
+            //Change current scene to location scene given by door
+            currentScene = currentScene.getDoor(d).takeDoor();
+            //Stop looking for doors this frame
+            tookDoor = true;
+          }
+          break; //Stop looking for a key
+        }
       }
     }
+    //If a door was taken last iteration, stop looping
+    if (tookDoor) break;
   }
 } //end draw()

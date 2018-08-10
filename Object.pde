@@ -41,8 +41,9 @@ public class Object {
   }
   
   public void setLocation(Coord location) {
-    Coord delta = location.minus(mCoord);
+    Coord delta = location.minus(this.mCoord);
     this.move(delta);
+    mCol.setLocation(location);
   }
   
   public void setLocation(float x, float y) {
