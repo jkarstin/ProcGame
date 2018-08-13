@@ -4,6 +4,8 @@
  */
 
 public class NPC extends Being {
+  private final static float BLURBSHOWTIME = 3;
+  
   private Conversation mConvo;
   private Timer mBlurbShowTimer;
   private String mCurrentBlurb;
@@ -11,7 +13,7 @@ public class NPC extends Being {
   public NPC(String name, float x, float y, float w, float h) {
     super(name, x, y, w, h);
     mConvo = new Conversation();
-    mBlurbShowTimer = new Timer(3);
+    mBlurbShowTimer = new Timer(BLURBSHOWTIME);
     mCurrentBlurb = "";
   }
   
