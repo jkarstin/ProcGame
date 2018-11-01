@@ -1,7 +1,7 @@
 /* ProcGame.pde
  * 
  * This is the main() equivalent of the program. The core unit, that controls the rest of the game.
- * Must remain the same name as the directory it is stored in, for Processing to understand this.
+ * Must remain the same name as the directory it is stored in for Processing to compile correctly.
  * 
  * J Karstin Neill    07.27.18
  */
@@ -126,7 +126,7 @@ void setup() {
 
 //-------- EXECUTION --------//
 
-//Runs once upon any key press; key pressed stored in "key" variable
+//Runs once upon any key press; char key-code for key pressed stored in "key" built-in variable
 void keyPressed() {
   if      (key == 'a' || key == 'A') moveVect.setX(-1);
   else if (key == 'd' || key == 'D') moveVect.setX( 1);
@@ -225,7 +225,7 @@ void draw() {
         }
       }
     }
-    //If a door was taken last iteration, stop looping
+    //If currentScene.getDoor(d) was taken, stop looping
     if (tookDoor) break;
   }
 } //end draw()
